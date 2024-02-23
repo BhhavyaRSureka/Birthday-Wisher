@@ -9,6 +9,7 @@ import React from 'react';
 import { render, screen, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Birthday from '../../Birthday.jsx'; // correct relative import path for where the test file is saved
+import { BrowserRouter as Router } from 'react-router-dom';
 
 // Define the test suite using `describe`
 describe('Birthday Component Tests', () => {
@@ -19,7 +20,7 @@ describe('Birthday Component Tests', () => {
 
   // Test case for rendering with all props provided
   test('renders with name, day, and month props', () => {
-    render(<Birthday name="John Doe" day={15} month={5} />);
+    render(<Router><Birthday name="John Doe" day={15} month={5} /></Router>);
     const nameElement = screen.getByText(/john doe/i);
     expect(nameElement).toBeInTheDocument();
 
@@ -28,7 +29,9 @@ describe('Birthday Component Tests', () => {
 
   // Test case for rendering without props, expecting defaults
   test('renders with default props when no props are provided', () => {
-    render(<Birthday />);
+    render(<Router>
+      <Birthday />
+    </Router>);
     // Expected behavior should be determined by the default props handling in the component
     // Add assertions here once the default behavior is known
   });

@@ -5,9 +5,9 @@
 
 // ********RoostGPT********
 import React from 'react';
-import { render, cleanup, fireEvent } from '@testing-library/react';
+import { render, cleanup, fireEvent,screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import Wish from '../Wish.jsx';
+import Wish from '../../Wish.jsx';
 
 describe('Wish component', () => {
   // Perform general setup if necessary
@@ -18,15 +18,19 @@ describe('Wish component', () => {
   afterEach(cleanup); // Cleanup tasks after each test
 
   test('renders without crashing', () => {
-    const { getByTestId } = render(<Wish />);
+    const name ="Bhhavya!";
+    const { getByTestId } = render(<Wish name={name} />);
     // Assert that the component mounted
-    expect(getByTestId('wish-container')).toBeInTheDocument();
+    const container = screen.getByText(/HAPPY BIRTHDAY/);
+  expect(container).toBeInTheDocument();
+    // expect(getByTestId('wish-message')).toBeInTheDocument();
   });
 
   test('displays the correct initial message', () => {
-    const { getByText } = render(<Wish initialMessage="Happy Birthday!" />);
+    const name ="Bhhavya!";
+    const { getByText } = render(<Wish name={name} />);
     // Assert the initial message prop is displayed
-    expect(getByText('Happy Birthday!')).toBeInTheDocument();
+    expect(getByText("BHHAVYA!")).toBeInTheDocument();
   });
 
   // Add more test cases here...

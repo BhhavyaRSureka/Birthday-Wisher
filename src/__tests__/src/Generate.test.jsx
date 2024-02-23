@@ -8,6 +8,7 @@
 
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import '@testing-library/jest-dom/extend-expect';
 import Generate from '../../Generate'; // Import path relative to the test file location
 
@@ -22,13 +23,13 @@ describe('Generate Component', () => {
     test('valid inputs change state', () => {
         render(<Generate />);
         
-        const nameInput = screen.getByLabelText('Name');
-        const dayInput = screen.getByLabelText('Day');
-        const monthInput = screen.getByLabelText('Month');
+        const nameInput = screen.getByPlaceholderText("Enter Name");
+        const dayInput = screen.getByPlaceholderText('Enter Day');
+        const monthInput = screen.getByText('Select Month');
         
         fireEvent.change(nameInput, { target: { value: 'John' } });
         fireEvent.change(dayInput, { target: { value: 12 } });
-        fireEvent.change(monthInput, { target: { value: 5 } });
+        fireEvent.change(monthInput, { target: { value: '5' } });
         
         expect(nameInput.value).toBe('John');
         expect(dayInput.value).toBe('12');
@@ -37,28 +38,35 @@ describe('Generate Component', () => {
 
     // Test case 3: link generation logic correctness
     test('link generation logic is correct', () => {
-        render(<Generate />);
+        render(<Router> 
+        <Generate />
+    </Router>);
         
-        const nameInput = screen.getByLabelText('Name');
-        const dayInput = screen.getByLabelText('Day');
-        const monthInput = screen.getByLabelText('Month');
-        const generateButton = screen.getByText('Generate');
+        const nameInput = screen.getByPlaceholderText('Enter Name');
+        const dayInput = screen.getByPlaceholderText('Enter Day');
+        const monthInput = screen.getByText('Select Month');
+        const generateButton = screen.getByText('Generate Link');
         
         fireEvent.change(nameInput, { target: { value: 'Jane' } });
         fireEvent.change(dayInput, { target: { value: 8 } });
-        fireEvent.change(monthInput, { target: { value: 3 } });
+        fireEvent.change(monthInput, { target: { value: '3' } });
         fireEvent.click(generateButton);
         
-        const generatedLink = screen.getByTestId('generated-link');
-        expect(generatedLink.href).toBe('https://birthday-wisher.netlify.app/birthday/Jane/8/3');
+        const generatedLink = screen.getByText(
+            'https://birthday-wisher.netlify.app/birthday/Jane/8/3'
+        );
+        
+        expect(generatedLink).toBeInTheDocument();
     });
 
     // Test case 4: empty name input prevents link generation
     test('empty name input prevents link generation', () => {
-        render(<Generate />);
+        render(<Router>
+        <Generate />
+    </Router>);
         
-        const nameInput = screen.getByLabelText('Name');
-        const generateButton = screen.getByText('Generate');
+        const nameInput = screen.getByPlaceholderText('Enter Name');
+        const generateButton = screen.getByText('Generate Link');
         
         fireEvent.change(nameInput, { target: { value: '' } }); // Empty name
         fireEvent.click(generateButton);
