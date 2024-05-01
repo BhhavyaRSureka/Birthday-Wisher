@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const Generate = () => {
   const [name, setName] = useState('');
   const [day, setDay] = useState(1);
-  const [month, setMonth] = useState(1);
+  const [month, setMonth] = useState('1');
   const [link, setLink] = useState('');
   const generateLink = () => {
     setLink(
@@ -31,7 +31,7 @@ const Generate = () => {
         />
         <select value={month} onChange={(e) => setMonth(e.target.value)}>
           <option value=''>Select Month</option>
-          <option selected value='1'>
+          <option value='1'>
             January
           </option>
           <option value='2'>February</option>
